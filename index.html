@@ -86,11 +86,23 @@ small,.note{color:#888;font-size:11px;line-height:1.5}
 #prSheet{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:62%;overflow:auto;border-radius:22px 22px 0 0;padding:8px 12px calc(var(--safe-bottom) + 12px);transform:translateY(105%);transition:transform .25s}#prSheet.show{transform:none}
 .pri{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)}.pri img{width:46px;height:46px;border-radius:10px;object-fit:cover}.pri b{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}.pri button{padding:6px 9px;border-radius:12px;font-size:11px}
 #ggrid img.sel{outline:3px solid #ffd60a;outline-offset:-3px;opacity:.8}
+/* v6 */
+#galSheet.show{display:flex;flex-direction:column;padding:0}
+#gTop{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:calc(var(--safe-top) + 10px) calc(var(--safe-right) + 14px) 8px calc(var(--safe-left) + 14px)}
+#gTop b{font-size:21px;display:block}#gCnt{font-size:11px;color:#aaa}#gTop .gr{display:flex;gap:6px;align-items:center}
+#gSz{display:flex;padding:2px;border-radius:18px}#gSz button{width:34px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:#aaa}#gSz .on{background:#ffd60a;color:#000}
+#ggrid{--cell:112px;flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cell),1fr));gap:4px;padding:4px calc(var(--safe-right) + 6px) 8px calc(var(--safe-left) + 6px);align-content:start;margin:0}
+#ggrid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#222;display:block}
+#gBar{display:flex;gap:6px;overflow-x:auto;flex:none;padding:8px calc(var(--safe-right) + 12px) calc(var(--safe-bottom) + 10px) calc(var(--safe-left) + 12px);background:rgba(18,18,22,.7);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border-top:var(--gb)}
+#gBar[hidden]{display:none}#gBar button{flex:none;padding:9px 13px;border-radius:18px;font-weight:600;background:var(--g);border:var(--gb);color:#fff}#gBar .dng{color:#ff8a80}
+#gProg{position:absolute;left:12px;right:12px;bottom:calc(var(--safe-bottom) + 72px);display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:16px;background:rgba(18,18,22,.88);border:var(--gb);z-index:3}#gProg[hidden]{display:none}
+.seg2{display:flex;gap:2px;padding:2px;margin:4px auto 6px;width:fit-content;border-radius:16px;background:var(--g);border:var(--gb)}.seg2 button{padding:5px 16px;border-radius:14px;font-size:11px;font-weight:700;color:#bbb}.seg2 .on{background:#ffd60a;color:#000}
+.set.off{opacity:.38;pointer-events:none}
 @media (orientation:landscape) and (max-height:520px){#app{flex-direction:row}#bottom{width:310px;overflow-y:auto;padding-right:env(safe-area-inset-right)}}
 </style></head><body>
 <div id="app">
  <div id="stage">
-  <div id="top"><div class="seg"><button id="mRaw">SEM PÓS</button><button id="mCre">CRIATIVO</button></div><span id="info"></span><span style="flex:1"></span><button class="ic" id="bStu" aria-label="Estúdio">✦</button><button class="ic" id="bAsp">Auto</button><button class="ic" id="bTim">⏱</button><button class="ic" id="bTorch" hidden>⚡</button><button class="ic" id="bSet" aria-label="Configurações">⚙</button></div>
+  <div id="top"><div class="seg"><button id="mRaw">SEM PÓS</button><button id="mCre">CRIATIVO</button></div><span id="info"></span><span style="flex:1"></span><button class="ic" id="bAsp">Auto</button><button class="ic" id="bTim">⏱</button><button class="ic" id="bTorch" hidden>⚡</button><button class="ic" id="bSet" aria-label="Configurações">⚙</button></div>
   <div id="badge" hidden>● SEM PÓS-PROCESSAMENTO ATIVO</div>
   <div id="vf"><div id="vin"><canvas id="pc"></canvas><img id="dxo" alt="" hidden><canvas id="ovL"></canvas><canvas id="ovT"></canvas><div id="grid" hidden></div><div id="lvl" hidden></div><canvas id="peak" hidden></canvas><canvas id="hist" width="128" height="56" hidden></canvas><div id="cd" hidden></div></div><div id="cap"></div></div>
   <div id="pnl"><div class="pn" id="pn-fl" hidden></div><div class="pn" id="pn-fx" hidden></div><div class="pn pb" id="pn-zm" hidden></div><div class="pn pb" id="pn-iso" hidden></div><div class="pn pb" id="pn-sh" hidden></div><div class="pn pb" id="pn-ev" hidden></div><div class="pn pb" id="pn-wb" hidden></div><div class="pn pb" id="pn-fo" hidden></div><div class="pn" id="pn-gr" hidden></div></div><div id="msg"></div>
@@ -110,7 +122,7 @@ small,.note{color:#888;font-size:11px;line-height:1.5}
  <p class="note">Tudo é processado neste aparelho. Nenhuma foto é enviada a servidores. O iPhone e o Safari ainda aplicam o processamento interno deles; o modo Sem pós-processamento apenas impede qualquer processamento adicional do MarCam Pro. Não há captura RAW, ProRAW, HEIF ou Live Photo na web.</p>
 </div>
 
-<div class="sheet" id="galSheet"><button class="x" id="galX">×</button><h2>Galeria</h2><div class="note" id="galEmpty"></div><div id="ggrid"></div></div>
+<div class="sheet" id="galSheet"><div id="gTop"><div><b>Galeria</b><span id="gCnt"></span></div><div class="gr"><div id="gSz" class="seg"></div><button class="ic" id="gSel" style="width:auto;padding:0 12px">Selecionar</button><button class="ic" id="galX" aria-label="Fechar">×</button></div></div><div class="note" id="galEmpty" style="padding:0 16px"></div><div id="ggrid"></div><div id="gProg" hidden><span></span><button id="gProgX" class="ic" style="width:auto;padding:0 12px">Cancelar</button></div><div id="gBar"></div></div>
 
 <div id="viewer"><div id="vtop"><button id="vClose" style="font-size:15px">‹ Galeria</button><span id="vInfo" class="note"></span></div>
  <div id="vstage"><canvas id="vc"></canvas></div><div id="vctl"></div>
@@ -122,6 +134,7 @@ const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms)),
 const toBlob=(c,t,q)=>new Promise(r=>c.toBlob(r,t,q));
 let toastT;function toast(m,err){$('#msg').innerHTML='<span'+(err?' style="color:#ff8a80"':'')+'>'+esc(m)+'</span>';clearTimeout(toastT);toastT=setTimeout(()=>$('#msg').innerHTML='',err?5000:2500)}
 
+addEventListener('error',e=>toast('Erro: '+e.message,1));addEventListener('unhandledrejection',e=>toast('Erro: '+(e.reason&&e.reason.message||e.reason),1));
 /* ===== Filtros e parâmetros ===== */
 const N0={exp:0,con:0,sat:0,tmp:0,tnt:0,sh:0,hi:0,fade:0,bw:0,gr:0,gs:0,vg:0,fe:0,pr:0,rb:0,cs:0};
 const ADJ=[['exp','Exposição',-2,2],['con','Contraste',-1,1],['sat','Saturação',-1,1],['tmp','Temperatura',-1,1],['tnt','Matiz',-1,1],['sh','Sombras',-1,1],['hi','Realces',-1,1],['gr','Grão',0,1],['gs','Tamanho do grão',0,1],['vg','Vinheta',0,1]];
@@ -216,7 +229,7 @@ function thumbFor(fid){const e=eff({mode:'creative',fid,k:1,adj:adj0()});CR.draw
 /* ===== IndexedDB ===== */
 const DB=new Promise((res,rej)=>{const r=indexedDB.open('marcam',2);r.onupgradeneeded=()=>{for(const n of['photos','luts','presets'])if(!r.result.objectStoreNames.contains(n))r.result.createObjectStore(n,{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
 const tx=async(s,m,f)=>{const db=await DB;return new Promise((res,rej)=>{const t=db.transaction(s,m),q=f(t.objectStore(s));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error)})};
-const put=(s,o)=>tx(s,'readwrite',x=>x.put(o)),del=(s,id)=>tx(s,'readwrite',x=>x.delete(id)),all=s=>tx(s,'readonly',x=>x.getAll());
+const put=(s,o)=>tx(s,'readwrite',x=>x.put(o)),del=(s,id)=>tx(s,'readwrite',x=>x.delete(id)),all=s=>Promise.race([tx(s,'readonly',x=>x.getAll()),sleep(4000).then(()=>{throw Error('IndexedDB bloqueado: feche outras abas do MarCam e recarregue')})]);
 
 /* ===== LUT .cube ===== */
 function parseCube(t,name){
@@ -306,18 +319,23 @@ async function buildPro(){
  cur='zm';if(S.facing==='environment'){try{const ds=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput'&&/back|traseira|rear/i.test(d.label)&&!/dual|triple/i.test(d.label)),d=document.createElement('div');d.className='set';
   if(ds.length>1){d.innerHTML='<span>Lente</span><div class=btns></div>';ds.forEach(x=>{const b=document.createElement('button');b.textContent=/ultra/i.test(x.label)?'Ultrawide':/tele/i.test(x.label)?'Telefoto':'Principal';b.className=x.deviceId===st.deviceId?'act':'';b.onclick=()=>{S.dev=x.deviceId;startCam()};d.querySelector('.btns').appendChild(b)})}
   else d.innerHTML='<span class=note style="width:auto">Lentes: o navegador expõe só uma câmera traseira.</span>';add(d)}catch(e){}}
- cur='iso';const X={a:true,iso:caps.iso?caps.iso.min:0,t:null};let at;
- const ax=()=>{const c={exposureMode:X.a?'continuous':'manual'};if(!X.a){if(caps.iso)c.iso=X.iso;if(caps.exposureTime&&X.t)c.exposureTime=X.t}apply(c)},man=()=>{X.a=false;at.i.checked=false};
- if((caps.iso||caps.exposureTime)&&em.includes('manual')){at=tg('Auto',true,a=>{X.a=a;ax()});add(at);
-  if(caps.iso)add(sl('ISO',caps.iso.min,caps.iso.max,caps.iso.step||1,Math.max(caps.iso.min,st.iso||0),Math.round,v=>{X.iso=v;man();ax()}));else miss.push('ISO');
+ cur='iso';const X={a:true,iso:caps.iso?caps.iso.min:0,t:null},sgs=[],rows=[],lk=a=>rows.forEach(r=>r.classList.toggle('off',a)),
+ ax=()=>{const c={exposureMode:X.a?'continuous':'manual'};if(!X.a){if(caps.iso)c.iso=X.iso;if(caps.exposureTime&&X.t)c.exposureTime=X.t}apply(c)},
+ mkx=()=>{const g=seg(a=>{X.a=a;sgs.forEach(q=>q!==g&&q.set(a,1));lk(a);ax()});sgs.push(g);return g};
+ if((caps.iso||caps.exposureTime)&&em.includes('manual')){
+  if(caps.iso){add(mkx());const r=sl('ISO',caps.iso.min,caps.iso.max,caps.iso.step||1,Math.max(caps.iso.min,st.iso||0),Math.round,v=>{X.iso=v;ax()});rows.push(r);add(r)}else miss.push('ISO');
   if(caps.exposureTime){cur='sh';const c=caps.exposureTime,ss=STOPS.filter(x=>x*1e4>=c.min*.99&&x*1e4<=c.max*1.01);
-   if(ss.length>1)add(sl('Obturador',0,ss.length-1,1,0,i=>fS(ss[i]),i=>{X.t=ss[i]*1e4;man();ax()}));else miss.push('Obturador')}else miss.push('Obturador')}
+   if(ss.length>1){add(mkx());const r=sl('Obturador',0,ss.length-1,1,0,i=>fS(ss[i]),i=>{X.t=ss[i]*1e4;ax()});rows.push(r);add(r)}else miss.push('Obturador')}else miss.push('Obturador')}
  else miss.push('ISO','Obturador');
- cur='ev';if(caps.exposureCompensation){const c=caps.exposureCompensation;add(sl('EV',Math.max(c.min,-2),Math.min(c.max,2),.1,st.exposureCompensation||0,sg,v=>apply({exposureCompensation:v}),1))}
- else add(sl('EV (digital)',-2,2,.1,0,sg,v=>dig('exp',v),1));
- cur='wb';if(caps.colorTemperature&&wm.includes('manual')){const c=caps.colorTemperature,lo=Math.max(c.min,2300),hi=Math.min(c.max,10000),w=tg('WB auto',true,x=>apply(x?{whiteBalanceMode:'continuous'}:{whiteBalanceMode:'manual',colorTemperature:+k.i.value})),
-  k=sl('Kelvin',lo,hi,100,Math.min(hi,Math.max(lo,st.colorTemperature||5500)),v=>Math.round(v)+' K',v=>{w.i.checked=false;apply({whiteBalanceMode:'manual',colorTemperature:v})});add(w);add(k)}
- else add(sl('WB (digital)',2300,10000,100,6500,v=>v+' K',v=>dig('tmp',v>6500?(v-6500)/3500:(v-6500)/4200)));
+ lk(true);
+ cur='ev';{const nat=!!caps.exposureCompensation,c=caps.exposureCompensation;let evv=0;
+  const r=nat?sl('EV',Math.max(c.min,-2),Math.min(c.max,2),.1,0,sg,v=>{evv=v;apply({exposureCompensation:v})},1):sl('EV (digital)',-2,2,.1,0,sg,v=>{evv=v;dig('exp',v)},1);
+  const g=seg(a=>{r.classList.toggle('off',a);if(a){if(nat)apply({exposureCompensation:0});else{S.adj.exp=0;inst[0].sync()}}else if(nat)apply({exposureCompensation:evv});else dig('exp',evv)});
+  add(g);add(r);r.classList.add('off')}
+ cur='wb';{const nat=caps.colorTemperature&&wm.includes('manual'),fT=v=>v>6500?(v-6500)/3500:(v-6500)/4200;let lo=2300,hi=10000;if(nat){lo=Math.max(caps.colorTemperature.min,2300);hi=Math.min(caps.colorTemperature.max,10000)}
+  const r=sl(nat?'Kelvin':'WB (digital)',lo,hi,100,Math.min(hi,Math.max(lo,nat?(st.colorTemperature||5500):6500)),v=>Math.round(v)+' K',v=>nat?apply({whiteBalanceMode:'manual',colorTemperature:v}):dig('tmp',fT(v)));
+  const g=seg(a=>{r.classList.toggle('off',a);const v=+r.i.value;if(a){if(nat)apply({whiteBalanceMode:'continuous'});else{S.adj.tmp=0;inst[0].sync()}}else if(nat)apply({whiteBalanceMode:'manual',colorTemperature:v});else dig('tmp',fT(v))});
+  add(g);add(r);r.classList.add('off')}
  cur='fo';if(fm.includes('manual')&&caps.focusDistance){const c=caps.focusDistance,f=tg('Foco auto',true,x=>apply({focusMode:x?'continuous':'manual'}));add(f);
   add(sl('Foco',c.min,c.max,c.step||(c.max-c.min)/100,st.focusDistance||c.min,v=>v.toFixed(2)+' m',v=>{f.i.checked=false;apply({focusMode:'manual',focusDistance:v})}));
   if(fm.includes('single-shot'))add(tg('Travar foco',false,x=>apply({focusMode:x?'single-shot':'continuous'})))}else miss.push('Foco manual');
@@ -370,10 +388,6 @@ $('#shut').onclick=async()=>{for(let i=S.timer;i>0;i--){$('#cd').textContent=i;$
 async function srcOf(blob){const b=await createImageBitmap(blob,{imageOrientation:'from-image'}),c=document.createElement('canvas');c.width=b.width;c.height=b.height;c.getContext('2d').drawImage(b,0,0);b.close();return c}
 async function renderThumb(p,size){const c=await compose(p,size);return c.toDataURL('image/jpeg',.8)}
 async function galBtn(){const p=PHOTOS[0];$('#gal img').src=p?await renderThumb(p,120):''}
-async function openGallery(){
- $('#galSheet').classList.add('show');$('#ggrid').innerHTML='';gUpd();$('#galEmpty').textContent=PHOTOS.length?'Miniaturas mostram a foto com o filtro aplicado; o arquivo original fica preservado.':'Nenhuma foto ainda.';
- for(const p of PHOTOS){const i=new Image();i.src=await renderThumb(p,300);i.dataset.id=p.id;i.classList.toggle('sel',selMode&&selSet.has(p.id));i.onclick=()=>{if(selMode){selSet.has(p.id)?selSet.delete(p.id):selSet.add(p.id);gUpd()}else if(pick){const f=pick;pick=null;$('#galSheet').classList.remove('show');f(p)}else openViewer(p)};$('#ggrid').appendChild(i)}
-}
 let cur,V,bmp,VC;
 const renderV=async()=>{VR.draw(bmp,bmp.width,bmp.height,V.cmp?null:eff(V),0,1600);const o=V.cmp?VR.c:await fin(VR.c,V.fx,V.dx),c=$('#vc');c.width=o.width;c.height=o.height;c.getContext('2d').drawImage(o,0,0)};
 async function openViewer(p){
@@ -385,7 +399,7 @@ async function openViewer(p){
 }
 $('#vClose').onclick=()=>{$('#viewer').classList.remove('show');openGallery();galBtn()};
 $('#vSave').onclick=async()=>{cur.params={...cur.params,fid:V.fid,k:V.k,adj:{...V.adj},fx:V.fx,dx:V.dx};await put('photos',cur);toast('Edição salva. O original continua intacto.')};
-$('#vDel').onclick=async()=>{if(!confirm('Excluir esta foto?'))return;await del('photos',cur.id);PHOTOS=PHOTOS.filter(p=>p!==cur);$('#vClose').onclick()};
+$('#vDel').onclick=async()=>{if(!confirm('Excluir esta foto?'))return;await delPhotos([cur.id]);$('#vClose').onclick()};
 async function saveOut(blob,name){
  const f=new File([blob],name,{type:blob.type});
  if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]});return}catch(e){if(e.name==='AbortError')return}}
@@ -467,11 +481,11 @@ $('#stBody').addEventListener('input',e=>{
  if(p==='fx.ts.sty'){ST.fx.ts.col=TSC[v];stSync()}stDraw()});
 $('#stBody').addEventListener('change',e=>e.target.dispatchEvent(new Event('input',{bubbles:true})));
 $('#stL').onclick=e=>{const b=e.target;if(b.id==='stDel'){ST.layers.splice(ST.sel,1);ST.sel=Math.max(0,ST.sel-1)}else if(b.dataset.i)ST.sel=+b.dataset.i;else return;stUI();stSync();stDraw()};
-$('#stX').onclick=()=>$('#studio').classList.remove('show');$('#stClr').onclick=()=>{ST.layers=[];ST.sel=0;stUI();stDraw()};
+$('#stX').onclick=()=>{$('#studio').classList.remove('show');openGallery()};$('#stClr').onclick=()=>{ST.layers=[];ST.sel=0;stUI();stDraw()};
 $('#stG').onclick=()=>{pick=stAdd;openGallery()};
 $('#stCap').onclick=()=>{capTo=true;$('#studio').classList.remove('show');toast('Tire a próxima foto: ela entra como nova camada.')};
 $('#stSeed').onclick=()=>{ST.fx.lk.seed=Math.floor(Math.random()*1e6);ST.fx.lk.rand=1;stSync();stDraw()};
-$('#bStu').onclick=stShow;$('#vStu').onclick=async()=>{ST.layers=[];$('#viewer').classList.remove('show');await stAdd(cur)};
+$('#vStu').onclick=async()=>{ST.layers=[];$('#viewer').classList.remove('show');await stAdd(cur)};
 async function stOut(){const c=stRender(4096);if(!c){toast('Adicione ao menos uma foto.',1);return}return{c,blob:await toBlob(c,S.fmt,.97)}}
 $('#stSave').onclick=async()=>{const o=await stOut();if(!o)return;const p={id:Date.now(),blob:o.blob,w:o.c.width,h:o.c.height,raw:false,comp:1,date:new Date().toISOString(),params:{fid:'orig',k:1,adj:adj0()}};
  await put('photos',p);PHOTOS.unshift(p);galBtn();toast('Salvo como nova foto. Os originais continuam intactos.')};
@@ -480,7 +494,7 @@ $('#stExp').onclick=async()=>{const o=await stOut();if(o)saveOut(o.blob,'MarCam_
 function setMode(m){S.mode=m;$('#mRaw').classList.toggle('on',m==='raw');$('#mCre').classList.toggle('on',m==='creative');$('#badge').hidden=m!=='raw';document.body.classList.toggle('rawm',m==='raw');if(m==='raw'&&(PN==='fl'||PN==='fx'))openP(null);layout();tbSync()}
 $('#mRaw').onclick=()=>setMode('raw');$('#mCre').onclick=()=>setMode('creative');
 $('#bSet').onclick=()=>$('#setSheet').classList.add('show');$('#setX').onclick=()=>$('#setSheet').classList.remove('show');
-$('#gal').onclick=openGallery;$('#galX').onclick=()=>{pick=null;$('#galSheet').classList.remove('show')};
+$('#gal').onclick=openGallery;$('#galX').onclick=()=>{pick=null;selMode=false;selSet.clear();forceBatch=false;$('#galSheet').classList.remove('show')};
 const bind=(id,fn)=>$(id).onchange=e=>fn(e.target.value);
 bind('#sRes',v=>{S.res=v;startCam()});bind('#sFmt',v=>S.fmt=v);
 
@@ -552,7 +566,7 @@ function mirApply(){const m=S.facing==='user'&&S.mirror!=='none';PR.c.style.tran
 bind('#sMir',v=>{S.mirror=v;mirApply()});
 /* gavetas: puxar para baixo fecha, toque na alça expande */
 function swipeClose(el,fn){let y=0;el.addEventListener('touchstart',e=>y=e.touches[0].clientY,{passive:true});el.addEventListener('touchend',e=>{if(el.scrollTop<=0&&e.changedTouches[0].clientY-y>70)fn()},{passive:true})}
-for(const el of[$('#pnl'),$('#stBody'),$('#prSheet')]){const g=document.createElement('div');g.className='grab';g.onclick=()=>el.classList.toggle('big');el.prepend(g)}
+for(const el of[$('#pnl'),$('#stBody')]){const g=document.createElement('div');g.className='grab';g.onclick=()=>el.classList.toggle('big');el.prepend(g)}
 swipeClose($('#pnl'),()=>openP(null));
 /* ===== Presets ===== */
 let PRS=[],PCTX=null;const PC={fl:1,k:1,col:1,fxo:1,ts:1,fr:1,lk:1},COLK=['exp','con','sat','tmp','tnt','sh','hi'],FXK=['gr','gs','vg','fe','pr','rb','cs'],
@@ -588,12 +602,72 @@ $('#prImp').onclick=()=>$('#prF').click();
 $('#prF').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{const o=JSON.parse(await f.text());if(typeof o.fid!=='string'||typeof o.adj!=='object'||typeof o.k!=='number')throw Error('não é um preset do MarCam Pro');
  const p={...o,id:'p'+Date.now(),name:String(o.name||f.name).slice(0,30)};await put('presets',p);PRS.push(p);prRender();toast(p.lutName&&!LUTS.some(l=>l.name===p.lutName)?'Importado. A LUT "'+p.lutName+'" não está instalada.':'Preset importado.',p.lutName&&!LUTS.some(l=>l.name===p.lutName))}catch(err){toast('Preset inválido: '+err.message,1)}};
 $('#vPr').onclick=()=>prOpen('view');
-/* ===== Galeria: seleção múltipla ===== */
-let selMode=false,selSet=new Set();
-function gUpd(){$('#galBar').hidden=!selMode;$('#gSel').classList.toggle('act',selMode);$('#gCnt').textContent=selSet.size+' selecionada(s)';document.querySelectorAll('#ggrid img').forEach(i=>i.classList.toggle('sel',selMode&&selSet.has(+i.dataset.id)))}
-$('#galSheet').querySelector('h2').insertAdjacentHTML('afterend','<div class="btns"><button id="gSel">Selecionar</button></div><div class="btns" id="galBar" hidden><span id="gCnt" class="note"></span><button id="gAll">Todas</button><button id="gNone">Desmarcar</button><button id="gOk" class="act">Usar no Estúdio</button></div>');
-$('#gSel').onclick=()=>{selMode=!selMode;if(!selMode)selSet.clear();gUpd()};$('#gAll').onclick=()=>{PHOTOS.forEach(p=>selSet.add(p.id));gUpd()};$('#gNone').onclick=()=>{selSet.clear();gUpd()};
-$('#gOk').onclick=()=>{if(!selSet.size)return toast('Selecione ao menos uma foto.',1);B.ids=[...selSet];B.cur=0;selMode=false;$('#galSheet').classList.remove('show');gUpd();stShow();stTab(4)};
+/* ===== Galeria v6: grade, seleção, exportação (ZIP), exclusão ===== */
+let selMode=false,selSet=new Set(),forceBatch=false,exCancel=false,gTok=0,exMode='o';const TH={};
+try{exMode=localStorage.getItem('mc_exm')||'o'}catch(e){}
+const lsg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lss=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const ico=n=>'<svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">'+Array.from({length:n*n},(_,k)=>{const s=18/n,g=n>1?1.6:0;return`<rect x="${(k%n)*s+g/2}" y="${Math.floor(k/n)*s+g/2}" width="${s-g}" height="${s-g}" rx="1.5"/>`}).join('')+'</svg>';
+$('#gSz').innerHTML=[['s',3,'Miniaturas pequenas'],['m',2,'Miniaturas médias'],['l',1,'Miniaturas grandes']].map(([z,n,t])=>`<button data-z="${z}" aria-label="${t}">${ico(n)}</button>`).join('');
+function gSize(z){lss('mc_gsz',z);$('#ggrid').style.setProperty('--cell',{s:'76px',m:'112px',l:'176px'}[z]);document.querySelectorAll('#gSz button').forEach(b=>b.classList.toggle('on',b.dataset.z===z))}
+$('#gSz').onclick=e=>{const b=e.target.closest('button');if(b)gSize(b.dataset.z)};gSize(lsg('mc_gsz')||'m');
+function gUpd(){const n=selSet.size;$('#gCnt').textContent=PHOTOS.length+' foto(s)'+(n?' · '+n+' selecionada(s)':'');$('#gSel').classList.toggle('on',selMode||n>0);$('#gSel').textContent=selMode||n?'Cancelar':'Selecionar';
+ $('#gBar').hidden=!!pick;$('#gBar').innerHTML='<button data-a="all">Selecionar tudo</button><button data-a="stu">✦ Estúdio</button>'+(n?`<button data-a="exp">⤓ Exportar</button><button data-a="mode">${exMode==='o'?'Originais':'Com edições'}</button><button data-a="del" class="dng">✕ Excluir</button><button data-a="can">Cancelar seleção</button>`:'');
+ document.querySelectorAll('#ggrid img').forEach(i=>i.classList.toggle('sel',selSet.has(+i.dataset.id)))}
+function openGallery(){$('#galSheet').classList.add('show');return gRender()}
+async function gRender(){
+ const tok=++gTok,g=$('#ggrid');g.innerHTML='';$('#galEmpty').textContent=PHOTOS.length?'':'Nenhuma foto ainda. Tire fotos com a câmera.';
+ const L=PHOTOS.map(p=>{const i=new Image();i.alt='';i.dataset.id=p.id;let T,lp=0;
+  i.onpointerdown=()=>{lp=0;T=setTimeout(()=>{lp=1;if(!pick){selMode=true;selSet.add(p.id);gUpd()}},500)};['pointerup','pointerleave','pointercancel'].forEach(e=>i.addEventListener(e,()=>clearTimeout(T)));
+  i.onclick=()=>{if(lp)return;if(pick){const f=pick;pick=null;$('#galSheet').classList.remove('show');f(p)}else if(selMode||selSet.size){selSet.has(p.id)?selSet.delete(p.id):selSet.add(p.id);gUpd()}else openViewer(p)};g.appendChild(i);return[i,p]});
+ gUpd();
+ for(const[i,p]of L){if(tok!==gTok)return;const k=p.id+JSON.stringify(p.params);if(!TH[k])TH[k]=await renderThumb(p,420);i.src=TH[k]}
+}
+$('#gSel').onclick=()=>{if(selMode||selSet.size){selMode=false;selSet.clear()}else selMode=true;gUpd()};
+$('#gBar').onclick=e=>{const a=e.target.dataset.a;if(!a)return;
+ if(a==='all'){PHOTOS.forEach(p=>selSet.add(p.id));selMode=true;gUpd()}else if(a==='can'){selSet.clear();selMode=false;gUpd()}
+ else if(a==='mode'){exMode=exMode==='o'?'e':'o';lss('mc_exm',exMode);gUpd()}else if(a==='del')gDelete();else if(a==='exp')gExport();else if(a==='stu')gStudio()};
+async function gStudio(){
+ const ps=[...selSet].map(id=>PHOTOS.find(p=>p.id===id)).filter(Boolean);$('#galSheet').classList.remove('show');const fb=forceBatch;forceBatch=false;selSet.clear();selMode=false;gUpd();
+ if(ps.length>1||(ps.length===1&&fb)){B.ids=ps.map(p=>p.id);B.cur=0;stShow();if(stT===4)stT=-1;stTab(4)}
+ else if(ps.length===1){ST.layers=[];await stAdd(ps[0])}else stShow();
+}
+async function delPhotos(ids){
+ for(const id of ids){await del('photos',id);for(const k in TH)if(k.startsWith(id+'{'))delete TH[k]}
+ PHOTOS=PHOTOS.filter(p=>!ids.includes(p.id));B.ids=B.ids.filter(i=>!ids.includes(i));
+ if(ids.includes(DX.id)){DX.on=0;DX.id=null;if(DX.url)URL.revokeObjectURL(DX.url);DX.url=null;dxApply()}galBtn();
+}
+async function gDelete(){const ids=[...selSet];if(!ids.length)return;if(!confirm('Excluir '+ids.length+' foto(s)? Esta ação não pode ser desfeita.'))return;
+ try{await delPhotos(ids);selSet.clear();selMode=false;toast(ids.length+' foto(s) excluída(s).');gRender()}catch(e){toast('Falha ao excluir: '+e.message,1)}}
+const hasEd=q=>q.fid!=='orig'||Object.values(q.adj||{}).some(Boolean)||q.fx||q.dx,ext=b=>({'image/png':'png','image/webp':'webp'}[b.type]||'jpg'),
+ pnm=p=>{const d=new Date(p.date),z=n=>String(n).padStart(2,'0');return'MarCam_'+d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'_'+z(d.getHours())+z(d.getMinutes())+z(d.getSeconds())};
+let CRC;function crc32(u){if(!CRC){CRC=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CRC[n]=c>>>0}}let c=-1;for(let i=0;i<u.length;i++)c=CRC[(c^u[i])&255]^(c>>>8);return(c^-1)>>>0}
+async function zip(items,prog){
+ const parts=[],cen=[],enc=new TextEncoder();let off=0;
+ for(const[i,it]of items.entries()){if(exCancel)throw Error('cancelado');
+  const u=new Uint8Array(await it.blob.arrayBuffer()),n=enc.encode(it.name),crc=crc32(u),d=new Date(),dt=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1),dd=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(),sz=u.length;
+  const h=new DataView(new ArrayBuffer(30)),c=new DataView(new ArrayBuffer(46));
+  h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(10,dt,true);h.setUint16(12,dd,true);h.setUint32(14,crc,true);h.setUint32(18,sz,true);h.setUint32(22,sz,true);h.setUint16(26,n.length,true);
+  c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(12,dt,true);c.setUint16(14,dd,true);c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,n.length,true);c.setUint32(42,off,true);
+  parts.push(h.buffer,n,it.blob);cen.push(c.buffer,n);off+=30+n.length+sz;prog(i+1)}
+ let cs=0;cen.forEach(b=>cs+=b.byteLength);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,items.length,true);e.setUint16(10,items.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+ return new Blob([...parts,...cen,e.buffer],{type:'application/zip'});
+}
+$('#gProgX').onclick=()=>{exCancel=true};
+async function gExport(){
+ const ps=[...selSet].map(id=>PHOTOS.find(p=>p.id===id)).filter(Boolean);if(!ps.length)return;exCancel=false;const pg=$('#gProg'),up=t=>pg.querySelector('span').textContent=t;pg.hidden=false;
+ try{const items=[],used={};
+  for(const[i,p]of ps.entries()){if(exCancel)throw Error('cancelado');up('Preparando '+(i+1)+'/'+ps.length+'…');await sleep(10);
+   let b=p.blob;if(exMode==='e'&&hasEd(p.params))b=await toBlob(await compose(p,8192),S.fmt,.97);
+   let n=pnm(p);used[n]=(used[n]||0)+1;if(used[n]>1)n+='_'+used[n];items.push({name:n+'.'+ext(b),blob:b})}
+  if(items.length===1)await saveOut(items[0].blob,items[0].name);
+  else{const z=await zip(items,k=>up('Compactando '+k+'/'+items.length+'…'));await saveOut(z,'MarCam_'+Date.now()+'.zip')}
+  toast('Exportação concluída: '+items.length+' foto(s).');
+ }catch(e){toast(e.message==='cancelado'?'Exportação cancelada.':'Falha na exportação: '+e.message,e.message!=='cancelado')}
+ pg.hidden=true;
+}
+/* AUTO | MANUAL */
+function seg(fn){const d=document.createElement('div');d.className='seg2';d.a=true;d.innerHTML='<button data-m="a" class="on">AUTO</button><button data-m="m">MANUAL</button>';
+ d.set=(a,silent)=>{d.a=a;[...d.children].forEach(b=>b.classList.toggle('on',(b.dataset.m==='a')===a));if(!silent)fn(a)};d.onclick=e=>{const m=e.target.dataset.m;if(m&&(m==='a')!==d.a)d.set(m==='a')};return d}
 /* ===== Estúdio em gavetas + Lote ===== */
 $('#stBody').insertAdjacentHTML('beforeend','<details><summary>Lote</summary><div class="btns"><button id="bhSel">Selecionar fotos</button><button id="bhPr">Presets</button><button id="bhGo" class="act">SALVAR TODAS</button></div><p class="note" id="bhInfo"></p><div class="btns" id="bhL"></div><div id="bhM"></div><p class="note" id="bhProg"></p></details>');
 const dsx=[...document.querySelectorAll('#stBody details')];dsx[0].prepend($('#stL'),$('#stG').parentNode);
@@ -607,7 +681,7 @@ $('#stTabs').onclick=e=>{const i=e.target.dataset.i;if(i==null)return;i==='p'?pr
 function bhInfo(){$('#bhInfo').textContent=B.ids.length?B.ids.length+' foto(s) selecionada(s). As configurações valem para todas; originais preservados.':'Nenhuma foto selecionada.';
  $('#bhL').innerHTML=B.ids.slice(0,30).map((id,i)=>`<button data-i=${i} class="${i===B.cur?'act':''}">${i+1}</button>`).join('')}
 $('#bhL').onclick=e=>{if(e.target.dataset.i!=null){B.cur=+e.target.dataset.i;bhInfo();bhPrev()}};
-$('#bhSel').onclick=()=>{selMode=true;selSet=new Set(B.ids);openGallery();gUpd()};$('#bhPr').onclick=()=>prOpen('bat');
+$('#bhSel').onclick=()=>{forceBatch=true;selSet=new Set(B.ids);selMode=true;openGallery()};$('#bhPr').onclick=()=>prOpen('bat');
 async function bhPrev(){const p=PHOTOS.find(q=>q.id===B.ids[B.cur]),c=stC(),x=c.getContext('2d');if(!p){c.width=320;c.height=120;x.fillStyle='#888';x.font='14px sans-serif';x.fillText('Selecione fotos para o lote',14,64);return}
  const o=await compose({blob:p.blob,params:{fid:B.fid,k:B.k,adj:B.adj,fx:B.fx}},900);c.width=o.width;c.height=o.height;x.drawImage(o,0,0)}
 $('#bhGo').onclick=async()=>{const ps=B.ids.map(id=>PHOTOS.find(p=>p.id===id)).filter(Boolean);if(!ps.length)return toast('Selecione fotos primeiro.',1);let ok=0;const er=[];$('#bhGo').disabled=true;
